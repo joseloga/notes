@@ -1,4 +1,6 @@
 import sys
+
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication
 
 from model import window_model
@@ -18,7 +20,7 @@ class noteController:
 
     def __addEventHandlers(self):
         self.view.notes.textChanged.connect(lambda: self.__getNotes())
-
+        # self.view.notes.keyPressEvent(self)
 
     def __getNotes(self):
         notes=self.view.getNotes()
