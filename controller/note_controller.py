@@ -20,6 +20,8 @@ class noteController:
 
     def __addEventHandlers(self):
         self.view.notes.textChanged.connect(lambda: self.__getNotes())
+        # self.view.notes.textChanged.connect(lambda: self.view.addPointer())
+
         # self.view.notes.keyPressEvent(self)
 
     def __getNotes(self):

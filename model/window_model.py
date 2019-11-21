@@ -1,5 +1,3 @@
-from controller import note_controller
-
 
 class windowModel:
 
