@@ -1,0 +1,11 @@
+sw
+	-dynamic
+	-presentation
+	-final
+db
+	- login
+	- final assignment
+	- hw 
+Ling.
+	-quiz
+	- Hw ch10

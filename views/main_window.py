@@ -14,10 +14,9 @@ class MainWindow(QWidget):
         self.model = window_model.windowModel()
         self.notes = QTextEdit()
         self.notes.setTabStopWidth(30)
-        # self.notes.setTabChangesFocus(True)
+        self.count = 0
         self.notes.installEventFilter(self)
         self.colors = self.colors()
-        # self.notes.setTextColor(self.colors[11])
         self.buildWindow()
         self.builder()
 
@@ -38,57 +37,45 @@ class MainWindow(QWidget):
 
     def builder(self):
         font = QtGui.QFont()
-        font.setPointSize(12)
-
-        # font.setFamily("Courier")
-        # font.setStyleHint()
-        # font.setFixedPitch()
-        # font.setPointSize(10)
-
+        font.setPointSize(14)
         self.setFont(font)
         self.gridLayout = QtWidgets.QGridLayout()
         self.notes.setStyleSheet("background-color : rgba(0,0,0,10%); color : white;")
         self.gridLayout.addWidget(self.notes, 0, 0, 1, 1)
         self.setLayout(self.gridLayout)
 
-
     def getNotes(self):
         return self.notes.toPlainText()
 
     def updateScreen(self, text):
-        count =0
+
         for i in text:
-            if count == 11:
-                count = 0
-            self.notes.setTextColor(self.colors[count])
-            # if "-" not in i:
-            #     string = "- "
-            #     string += i
-
-
-            # self.notes.textCursor().insertText(string)
-            # else:
+            self.updateColor()
             self.notes.textCursor().insertText(i)
-            count = count +1
 
     def keyPressEvent(self, e):
 
         if e.key() == Qt.Key_Escape:
             self.close()
 
+        if e.key() == Qt.Key_Return:
+            self.updateColor()
+
     def eventFilter(self, obj, event):
-        # end = self.notes.cursor().selectionEnd()
 
         if event.type() == QtCore.QEvent.KeyPress and obj is self.notes:
             if event.key() == QtCore.Qt.Key_Tab:
                 # pass
                 self.tabPressed()
                 return True
+            else:
+                if event.key()== QtCore.Qt.Key_Return:
+
+                    self.updateColor()
 
         return super().eventFilter(obj, event)
 
     def addPointer(self):
-
         self.notes.textCursor().insertText('-')
 
     def cursorPosition(self):
@@ -142,14 +129,25 @@ class MainWindow(QWidget):
         textLine = self.getLineText()
         self.cleanLine()
 
+
         if "-" not in textLine:
-            tab = "\t-"
+            # if "\t" in textLine:
+            #     tab = "*"
+            #     tab += textLine
+            # else:
+            tab = "\t- "
             tab += textLine
         else:
-            tab = "\t"
-            tab += textLine
+            if "\t" in textLine:
+                tab = "\t* "
+                tab += textLine
+
+            else:
+                tab = "\t"
+                tab += textLine
 
         # print(tab)
+
         self.notes.textCursor().insertText(tab)
 
     def cleanLine(self):
@@ -181,3 +179,15 @@ class MainWindow(QWidget):
         line = self.getLine()
         # print(text[line-1], "---------")
         return text[line-1]
+
+    def updateColor(self):
+        if self.count == 11:
+            self.count = 0
+        self.notes.setTextColor(self.colors[self.count])
+        self.count = self.count+1
+
+
+
+
+
+
